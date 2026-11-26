@@ -1,0 +1,76 @@
+:root {
+  color-scheme: light;
+
+  --font-sans: 'Geist Variable', 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Cascadia Mono', Consolas, 'Microsoft YaHei', monospace;
+
+  --bg: #e9eff4;
+  --panel: #f5f8fb;
+  --panel-2: #edf2f6;
+  --ink: #0b1520;
+  --muted: #5a6b7b;
+  --line: rgba(30, 70, 100, 0.16);
+  --accent: #b45309;
+  --accent-ink: #ffffff;
+  --bar-bg: #d8e2ea;
+  --tag-bg: rgba(180, 83, 9, 0.1);
+  --tag-ink: #b45309;
+  --drop-bg: rgba(163, 32, 32, 0.1);
+  --drop-ink: #a32020;
+  --ok: #b45309;
+  --grid: rgba(30, 70, 100, 0.06);
+  --glow: rgba(180, 83, 9, 0.08);
+  --scan: rgba(0, 0, 0, 0.06);
+
+  --radius: 4px;
+  --radius-sm: 2px;
+  --pill: 3px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+
+  --text-2xs: 9.5px;
+  --text-xs: 10.5px;
+  --text-sm: 11.5px;
+  --text-base: 13px;
+  --text-md: 15px;
+  --text-lg: 17px;
+  --text-xl: 24px;
+
+  --leading-body: 1.65;
+  --tracking-label: 0.12em;
+
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --z-sticky: 10;
+  --z-scanline: 40;
+  --z-overlay: 100;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #06080b;
+  --panel: #0b0f15;
+  --panel-2: #0e141c;
+  --ink: #e8f0f7;
+  --muted: #8595a6;
+  --line: rgba(120, 170, 200, 0.16);
+  --accent: #f5b94c;
+  --accent-ink: #1a1205;
+  --bar-bg: #16202b;
+  --tag-bg: rgba(245, 185, 76, 0.1);
+  --tag-ink: #f8ce85;
+  --drop-bg: rgba(255, 92, 92, 0.12);
+  --drop-ink: #ff8a8a;
+  --ok: #f5b94c;
+  --grid: rgba(120, 170, 200, 0.055);
+  --glow: rgba(245, 185, 76, 0.1);
+  --scan: rgba(0, 0, 0, 0.2);
+}

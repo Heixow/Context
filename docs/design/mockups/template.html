@@ -1,0 +1,1288 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root {
+        --font-sans: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+        --font-mono: 'Cascadia Mono', 'Consolas', 'Microsoft YaHei', monospace;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 1440px;
+        height: 900px;
+        overflow: hidden;
+      }
+      body {
+        font-family: var(--font-sans);
+        background: var(--bg);
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      .app {
+        width: 1440px;
+        height: 900px;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+        --pill: 999px;
+        --radius: 6px;
+        --radius-sm: 4px;
+        --shadow: none;
+        --panel-border: 1px solid var(--line);
+      }
+
+      .app[data-style='minimal'][data-theme='light'] {
+        --bg: #f7f6f3;
+        --panel: #ffffff;
+        --panel-2: #fbfaf8;
+        --ink: #1f2328;
+        --muted: #6f7377;
+        --line: #e6e2db;
+        --accent: #0f766e;
+        --accent-ink: #ffffff;
+        --bar-bg: #eceae5;
+        --tag-bg: #e1f3fe;
+        --tag-ink: #1f6c9f;
+        --drop-bg: #fdebec;
+        --drop-ink: #9f2f2d;
+        --ok: #346538;
+        --radius: 6px;
+        --radius-sm: 4px;
+      }
+      .app[data-style='minimal'][data-theme='dark'] {
+        --bg: #121212;
+        --panel: #191919;
+        --panel-2: #1e1e1e;
+        --ink: #ececea;
+        --muted: #9a9a96;
+        --line: #2c2c2a;
+        --accent: #2dd4bf;
+        --accent-ink: #06201d;
+        --bar-bg: #2a2a28;
+        --tag-bg: #10312d;
+        --tag-ink: #7dd3c7;
+        --drop-bg: #2e1616;
+        --drop-ink: #f0a3a3;
+        --ok: #8fce9e;
+        --radius: 6px;
+        --radius-sm: 4px;
+      }
+
+      .app[data-style='terminal'][data-theme='light'] {
+        --bg: #f4f4f0;
+        --panel: #eae8e3;
+        --panel-2: #f4f4f0;
+        --ink: #0a0a0a;
+        --muted: #55554f;
+        --line: #0a0a0a;
+        --accent: #e61919;
+        --accent-ink: #ffffff;
+        --bar-bg: #d6d3cc;
+        --tag-bg: #eae8e3;
+        --tag-ink: #0a0a0a;
+        --drop-bg: #f2d7d7;
+        --drop-ink: #b31212;
+        --ok: #0a0a0a;
+        --pill: 0;
+        --radius: 0;
+        --radius-sm: 0;
+      }
+      .app[data-style='terminal'][data-theme='dark'] {
+        --bg: #0a0a0a;
+        --panel: #121212;
+        --panel-2: #161616;
+        --ink: #eaeaea;
+        --muted: #8f8f8a;
+        --line: #2e2e2e;
+        --accent: #e61919;
+        --accent-ink: #ffffff;
+        --bar-bg: #262626;
+        --tag-bg: #1c1c1c;
+        --tag-ink: #eaeaea;
+        --drop-bg: #2a0a0a;
+        --drop-ink: #ff5a5a;
+        --ok: #4af626;
+        --pill: 0;
+        --radius: 0;
+        --radius-sm: 0;
+      }
+
+      .app[data-style='soft'][data-theme='light'] {
+        --bg: #f4f6f9;
+        --panel: #ffffff;
+        --panel-2: #f9fafb;
+        --ink: #18181b;
+        --muted: #71717a;
+        --line: rgba(226, 232, 240, 0.9);
+        --accent: #3b82f6;
+        --accent-ink: #ffffff;
+        --bar-bg: #e8edf4;
+        --tag-bg: #eff6ff;
+        --tag-ink: #1d4ed8;
+        --drop-bg: #fef2f2;
+        --drop-ink: #b91c1c;
+        --ok: #047857;
+        --pill: 999px;
+        --radius: 14px;
+        --radius-sm: 10px;
+        --shadow: 0 18px 40px -18px rgba(15, 23, 42, 0.2);
+      }
+      .app[data-style='soft'][data-theme='dark'] {
+        --bg: #0b0b0f;
+        --panel: #141419;
+        --panel-2: #1a1a21;
+        --ink: #f4f4f5;
+        --muted: #a1a1aa;
+        --line: rgba(255, 255, 255, 0.09);
+        --accent: #60a5fa;
+        --accent-ink: #08111f;
+        --bar-bg: #23232b;
+        --tag-bg: #1e293b;
+        --tag-ink: #93c5fd;
+        --drop-bg: #2a1215;
+        --drop-ink: #fca5a5;
+        --ok: #34d399;
+        --pill: 999px;
+        --radius: 14px;
+        --radius-sm: 10px;
+        --shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.7);
+      }
+
+      .app[data-style='scifi'][data-theme='light'] {
+        --bg: #e9eff4;
+        --panel: #f5f8fb;
+        --panel-2: #edf2f6;
+        --ink: #0b1520;
+        --muted: #5a6b7b;
+        --line: rgba(30, 70, 100, 0.16);
+        --accent: #b45309;
+        --accent-ink: #ffffff;
+        --bar-bg: #d8e2ea;
+        --tag-bg: rgba(180, 83, 9, 0.1);
+        --tag-ink: #b45309;
+        --drop-bg: rgba(163, 32, 32, 0.1);
+        --drop-ink: #a32020;
+        --ok: #b45309;
+        --grid: rgba(30, 70, 100, 0.06);
+        --glow: rgba(180, 83, 9, 0.08);
+        --scan: rgba(0, 0, 0, 0.06);
+        --pill: 3px;
+        --radius: 4px;
+        --radius-sm: 2px;
+      }
+      .app[data-style='scifi'][data-theme='dark'] {
+        --bg: #06080b;
+        --panel: #0b0f15;
+        --panel-2: #0e141c;
+        --ink: #e8f0f7;
+        --muted: #8595a6;
+        --line: rgba(120, 170, 200, 0.16);
+        --accent: #f5b94c;
+        --accent-ink: #1a1205;
+        --bar-bg: #16202b;
+        --tag-bg: rgba(245, 185, 76, 0.1);
+        --tag-ink: #f8ce85;
+        --drop-bg: rgba(255, 92, 92, 0.12);
+        --drop-ink: #ff8a8a;
+        --ok: #f5b94c;
+        --grid: rgba(120, 170, 200, 0.055);
+        --glow: rgba(245, 185, 76, 0.1);
+        --scan: rgba(0, 0, 0, 0.2);
+        --pill: 3px;
+        --radius: 4px;
+        --radius-sm: 2px;
+      }
+
+      .titlebar {
+        height: 52px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      .mark {
+        width: 14px;
+        height: 14px;
+        background: var(--accent);
+        border-radius: 3px;
+      }
+      .crumbs {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .crumbs b {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: var(--pill);
+        padding: 4px 9px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .seg {
+        display: flex;
+        border: 1px solid var(--line);
+        border-radius: var(--pill);
+        overflow: hidden;
+      }
+      .seg span {
+        padding: 5px 10px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .seg .on {
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-weight: 600;
+      }
+      .themehint {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+      }
+
+      .body {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 260px 1fr 320px;
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--line);
+        background: var(--panel-2);
+        padding: 14px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 0;
+      }
+      .side-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        padding: 0 4px;
+      }
+      .side-action {
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .search {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 7px 10px;
+        font-size: 11px;
+        color: var(--muted);
+        background: var(--panel);
+      }
+      .sess {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 9px 10px;
+        background: var(--panel);
+      }
+      .sess + .sess {
+        margin-top: 2px;
+      }
+      .sess.on {
+        border-color: var(--accent);
+      }
+      .sess-title {
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .sess-meta {
+        font-size: 10.5px;
+        color: var(--muted);
+      }
+      .frames {
+        margin-top: 7px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .frame {
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--muted);
+        padding: 4px 6px;
+        border-radius: var(--radius-sm);
+      }
+      .frame.on {
+        background: var(--accent);
+        color: var(--accent-ink);
+      }
+      .side-foot {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-family: var(--font-mono);
+        font-size: 9.5px;
+        color: var(--muted);
+        padding: 6px 4px 0;
+        border-top: 1px solid var(--line);
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+
+      .main {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+      }
+      .frame-head {
+        flex: none;
+        padding: 15px 24px 12px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .frame-head h1 {
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .meta {
+        margin-top: 4px;
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        color: var(--muted);
+      }
+      .tokens {
+        text-align: right;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .tokens b {
+        display: block;
+        font-size: 18px;
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .timeline {
+        flex: 1;
+        overflow: hidden;
+        padding: 0 24px;
+      }
+      .sysbar {
+        margin: 14px 0;
+        border: 1px dashed var(--line);
+        border-radius: var(--radius-sm);
+        padding: 8px 11px;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        background: var(--panel-2);
+        letter-spacing: 0.04em;
+      }
+      .msg {
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .msg:last-child {
+        border-bottom: none;
+      }
+      .msg-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 7px;
+      }
+      .role {
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+      }
+      .time,
+      .tok {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .tok {
+        margin-left: auto;
+      }
+      .msg p {
+        font-size: 13px;
+        line-height: 1.65;
+        color: var(--ink);
+      }
+      .msg ul {
+        margin: 7px 0 0 18px;
+        font-size: 12.5px;
+        line-height: 1.7;
+        color: var(--ink);
+      }
+      .tag {
+        margin-left: auto;
+        font-size: 9.5px;
+        padding: 2px 7px;
+        border-radius: var(--pill);
+        background: var(--tag-bg);
+        color: var(--tag-ink);
+      }
+      .tooluse,
+      .toolresult {
+        margin-top: 9px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: var(--panel);
+        overflow: hidden;
+      }
+      .tool-head {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 7px 10px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel-2);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .tool-name {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      pre.code {
+        padding: 9px 11px;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        line-height: 1.6;
+        color: var(--muted);
+        white-space: pre;
+        overflow: hidden;
+      }
+      .dropped {
+        opacity: 0.55;
+      }
+      .dropped p {
+        text-decoration: line-through;
+        text-decoration-thickness: 1px;
+      }
+      .drop-tag {
+        margin-left: auto;
+        font-size: 9.5px;
+        padding: 2px 7px;
+        border-radius: var(--pill);
+        background: var(--drop-bg);
+        color: var(--drop-ink);
+      }
+      .composer {
+        flex: none;
+        display: flex;
+        gap: 9px;
+        padding: 11px 24px 13px;
+        border-top: 1px solid var(--line);
+        background: var(--panel);
+      }
+      .input {
+        flex: 1;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 9px 11px;
+        font-size: 11.5px;
+        color: var(--muted);
+        background: var(--bg);
+      }
+      .send {
+        border: none;
+        background: var(--accent);
+        color: var(--accent-ink);
+        border-radius: var(--radius-sm);
+        padding: 0 18px;
+        font-size: 11.5px;
+        font-weight: 600;
+      }
+
+      .inspector {
+        border-left: 1px solid var(--line);
+        background: var(--panel);
+        padding: 13px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+        min-height: 0;
+      }
+      .tabs {
+        display: flex;
+        gap: 14px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+        font-size: 10.5px;
+        color: var(--muted);
+      }
+      .tabs .on {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+      .stat-row b {
+        font-family: var(--font-mono);
+        font-size: 15px;
+        color: var(--ink);
+      }
+      .bar {
+        height: 6px;
+        background: var(--bar-bg);
+        border-radius: var(--pill);
+        overflow: hidden;
+      }
+      .bar span {
+        display: block;
+        height: 100%;
+        width: 70%;
+        background: var(--accent);
+      }
+      .stats2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .statbox {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 8px 10px;
+        background: var(--panel-2);
+      }
+      .statbox .k {
+        font-size: 9.5px;
+        color: var(--muted);
+        margin-bottom: 3px;
+      }
+      .statbox .v {
+        font-family: var(--font-mono);
+        font-size: 13.5px;
+      }
+      .section-label {
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+      }
+      .breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .brow {
+        display: grid;
+        grid-template-columns: 62px 1fr 48px;
+        gap: 8px;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 9.5px;
+        color: var(--muted);
+      }
+      .brow .num {
+        text-align: right;
+      }
+      .mini {
+        height: 4px;
+        background: var(--bar-bg);
+        border-radius: var(--pill);
+        overflow: hidden;
+      }
+      .mini span {
+        display: block;
+        height: 100%;
+        background: var(--muted);
+        opacity: 0.55;
+      }
+      .matchbox {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 9px 10px;
+        background: var(--panel-2);
+      }
+      .match-title {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10.5px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .match-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10.5px;
+        color: var(--muted);
+        padding: 3px 0;
+      }
+      .ok {
+        color: var(--ok);
+        font-weight: 600;
+      }
+
+      .statusbar {
+        height: 32px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 20px;
+        border-top: 1px solid var(--line);
+        background: var(--panel);
+        font-family: var(--font-mono);
+        font-size: 9.5px;
+        color: var(--muted);
+      }
+      .statusbar .right {
+        margin-left: auto;
+      }
+
+      .telemetry {
+        display: none;
+        height: 26px;
+        flex: none;
+        align-items: center;
+        gap: 16px;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel-2);
+        font-family: var(--font-mono);
+        font-size: 9.5px;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+      .app[data-style='scifi'] .telemetry {
+        display: flex;
+      }
+      .telemetry .t-ok {
+        color: var(--ok);
+      }
+      .telemetry .t-right {
+        margin-left: auto;
+      }
+      .telemetry .sep {
+        width: 1px;
+        height: 10px;
+        background: var(--line);
+      }
+
+      .gauge-row {
+        display: none;
+        align-items: center;
+        gap: 14px;
+      }
+      .app[data-style='scifi'] .gauge-row {
+        display: flex;
+      }
+      .gauge {
+        position: relative;
+        width: 86px;
+        height: 86px;
+        flex: none;
+      }
+      .gauge svg {
+        display: block;
+      }
+      .gauge-label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1px;
+      }
+      .gauge-label b {
+        font-family: var(--font-mono);
+        font-size: 15px;
+        color: var(--ink);
+      }
+      .gauge-label span {
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+      }
+      .gauge-stats {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .gauge-stats .stat-row b {
+        font-size: 13px;
+      }
+
+      .spark {
+        display: none;
+        gap: 2px;
+        align-items: flex-end;
+        height: 20px;
+        margin-top: 6px;
+        justify-content: flex-end;
+      }
+      .app[data-style='scifi'] .spark {
+        display: flex;
+      }
+      .spark i {
+        width: 3px;
+        display: block;
+        background: var(--bar-bg);
+      }
+      .spark i.hot {
+        background: var(--accent);
+      }
+
+      /* Terminal style overrides */
+      .app[data-style='terminal'] {
+        font-family: var(--font-mono);
+      }
+      .app[data-style='terminal'] .titlebar {
+        border-bottom-width: 2px;
+      }
+      .app[data-style='terminal'] .brand,
+      .app[data-style='terminal'] .frame-head h1,
+      .app[data-style='terminal'] .sess-title {
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .app[data-style='terminal'] .side-head > span:first-child::before {
+        content: '[ ';
+      }
+      .app[data-style='terminal'] .side-head > span:first-child::after {
+        content: ' ]';
+      }
+      .app[data-style='terminal'] .tabs {
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .app[data-style='terminal'] .tabs .on::before {
+        content: '> ';
+      }
+      .app[data-style='terminal'] .role::before {
+        content: '[';
+      }
+      .app[data-style='terminal'] .role::after {
+        content: ']';
+      }
+      .app[data-style='terminal'] .msg {
+        padding: 11px 0;
+      }
+      .app[data-style='terminal'] .mark {
+        border-radius: 0;
+      }
+      .app[data-style='terminal']::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.14) 2px,
+          rgba(0, 0, 0, 0.14) 4px
+        );
+        opacity: 0.25;
+      }
+
+      /* Soft style overrides */
+      .app[data-style='soft'] .titlebar {
+        border-bottom: none;
+        background: transparent;
+      }
+      .app[data-style='soft'] .body {
+        padding: 0 10px 10px;
+        gap: 10px;
+      }
+      .app[data-style='soft'] .sidebar {
+        border-right: none;
+        background: var(--panel);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .app[data-style='soft'] .main {
+        background: var(--panel);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .app[data-style='soft'] .inspector {
+        border-left: none;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .app[data-style='soft'] .statusbar {
+        border-top: none;
+        background: transparent;
+      }
+      .app[data-style='soft'] .frame-head {
+        border-bottom: 1px solid var(--line);
+      }
+      .app[data-style='soft'] .sess {
+        border-color: var(--line);
+      }
+      .app[data-style='soft'] .sess.on {
+        border-color: var(--accent);
+      }
+      .app[data-style='soft'] .chip,
+      .app[data-style='soft'] .seg,
+      .app[data-style='soft'] .input {
+        border-radius: var(--pill);
+      }
+      .app[data-style='soft'] .tooluse,
+      .app[data-style='soft'] .toolresult {
+        border-radius: var(--radius-sm);
+      }
+
+      /* Sci-fi instrument overrides */
+      .app[data-style='scifi'] {
+        background-image:
+          linear-gradient(var(--grid) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+      .app[data-style='scifi'] .mark {
+        background: transparent;
+        border: 1px solid var(--accent);
+        border-radius: 0;
+        transform: rotate(45deg);
+        box-shadow: 0 0 10px var(--glow);
+      }
+      .app[data-style='scifi'] .titlebar {
+        position: relative;
+      }
+      .app[data-style='scifi'] .titlebar::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        opacity: 0.55;
+      }
+      .app[data-style='scifi'] .body {
+        position: relative;
+      }
+      .app[data-style='scifi'] .body::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(560px 280px at 68% 0%, var(--glow), transparent 70%);
+      }
+      .app[data-style='scifi'] .sidebar,
+      .app[data-style='scifi'] .main,
+      .app[data-style='scifi'] .inspector {
+        position: relative;
+      }
+      .app[data-style='scifi'] .inspector::before,
+      .app[data-style='scifi'] .main::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 14px;
+        height: 14px;
+        border-top: 1px solid var(--accent);
+        border-left: 1px solid var(--accent);
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .app[data-style='scifi'] .inspector::after,
+      .app[data-style='scifi'] .main::after {
+        content: '';
+        position: absolute;
+        right: 6px;
+        bottom: 6px;
+        width: 14px;
+        height: 14px;
+        border-right: 1px solid var(--accent);
+        border-bottom: 1px solid var(--accent);
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .app[data-style='scifi'] .role {
+        letter-spacing: 0.18em;
+      }
+      .app[data-style='scifi'] .side-head {
+        letter-spacing: 0.14em;
+      }
+      .app[data-style='scifi'] .dot {
+        box-shadow: 0 0 10px var(--accent);
+      }
+      .app[data-style='scifi'] .bar span {
+        box-shadow: 0 0 12px var(--accent);
+      }
+      .app[data-style='scifi'] .sess.on {
+        border-color: var(--accent);
+        box-shadow: inset 0 0 0 1px rgba(245, 185, 76, 0.08);
+      }
+      .app[data-style='scifi'][data-theme='light'] .sess.on {
+        box-shadow: inset 0 0 0 1px rgba(180, 83, 9, 0.08);
+      }
+      .app[data-style='scifi'] .tooluse,
+      .app[data-style='scifi'] .toolresult {
+        background: var(--panel-2);
+      }
+      .app[data-style='scifi'] .section-label::before {
+        content: '// ';
+        color: var(--accent);
+        opacity: 0.85;
+      }
+      .app[data-style='scifi'] .msg {
+        padding: 11px 0;
+      }
+      .app[data-style='scifi'] .inspector {
+        gap: 11px;
+        overflow: hidden;
+      }
+      .app[data-style='scifi'] .frame-head h1::after {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-left: 8px;
+        background: var(--accent);
+        vertical-align: 2px;
+        box-shadow: 0 0 8px var(--accent);
+      }
+      .app[data-style='scifi'] .tabs .on {
+        position: relative;
+      }
+      .app[data-style='scifi'] .tabs .on::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -9px;
+        height: 1px;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent);
+      }
+      .app[data-style='scifi']::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          var(--scan) 3px,
+          var(--scan) 4px
+        );
+        opacity: 0.35;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app" data-style="minimal" data-theme="light">
+      <header class="titlebar">
+        <div class="brand"><span class="mark"></span> Agent Context Visualizer</div>
+        <div class="crumbs">当前会话 <span>›</span> <b>帧 #12</b></div>
+        <div class="actions">
+          <span class="chip">Anthropic · claude-sonnet-5</span>
+          <span class="seg"><span class="on">自动生效</span><span>仅建议</span></span>
+          <span class="themehint">THEME / LIGHT</span>
+        </div>
+      </header>
+
+      <div class="telemetry">
+        <span>FRAME 12 / 4</span>
+        <span class="sep"></span>
+        <span>INPUT 18,432</span>
+        <span class="sep"></span>
+        <span>KEPT 12,840</span>
+        <span class="sep"></span>
+        <span>DROPPED 5,592</span>
+        <span class="sep"></span>
+        <span>MATCH 3</span>
+        <span class="sep"></span>
+        <span class="t-ok">SYNC OK</span>
+        <span class="t-right">LOCAL · 127.0.0.1:8787</span>
+      </div>
+
+      <div class="body">
+        <aside class="sidebar">
+          <div class="side-head"><span>会话</span><span class="side-action">＋ 合并</span></div>
+          <div class="search">搜索捕获、消息或工具</div>
+
+          <div class="sess on">
+            <div class="sess-title">上下文压缩分析</div>
+            <div class="sess-meta">4 帧 · 更新于 14:32</div>
+            <div class="frames">
+              <div class="frame on"><span>#12 · 14:32</span><span>18,432</span></div>
+              <div class="frame"><span>#11 · 14:28</span><span>16,907</span></div>
+              <div class="frame"><span>#10 · 14:21</span><span>15,220</span></div>
+            </div>
+          </div>
+
+          <div class="sess">
+            <div class="sess-title">Claude Code · 代理捕获</div>
+            <div class="sess-meta">手动合并 · 3 帧</div>
+          </div>
+
+          <div class="sess">
+            <div class="sess-title">未归并捕获</div>
+            <div class="sess-meta">2 条 · 待处理</div>
+          </div>
+
+          <div class="side-foot"><span class="dot"></span> 127.0.0.1:8787 · 代理开启</div>
+        </aside>
+
+        <main class="main">
+          <div class="frame-head">
+            <div>
+              <h1>上下文压缩分析</h1>
+              <div class="meta">帧 #12 · 14:32:08 · 3 条工具调用 · 流式</div>
+            </div>
+            <div class="tokens">
+              <b>18,432</b> input tokens
+              <div class="spark">
+                <i style="height: 30%"></i><i style="height: 55%"></i
+                ><i class="hot" style="height: 42%"></i> <i style="height: 70%"></i
+                ><i style="height: 48%"></i><i style="height: 82%"></i> <i style="height: 52%"></i
+                ><i class="hot" style="height: 66%"></i><i style="height: 38%"></i>
+                <i style="height: 76%"></i><i style="height: 60%"></i
+                ><i class="hot" style="height: 92%"></i> <i style="height: 47%"></i
+                ><i style="height: 71%"></i><i style="height: 56%"></i> <i style="height: 86%"></i
+                ><i style="height: 40%"></i><i class="hot" style="height: 62%"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline">
+            <div class="sysbar">
+              <span>SYSTEM + TOOLS · 6,200 tokens · 恒保留</span><span>展开</span>
+            </div>
+
+            <article class="msg user">
+              <div class="msg-head">
+                <span class="role">USER</span><span class="time">14:31:52</span>
+                <span class="tok">86 tok</span>
+              </div>
+              <p>帮我检查一下 MessageCard 为什么会重复渲染，并给出修改建议。</p>
+            </article>
+
+            <article class="msg assistant">
+              <div class="msg-head">
+                <span class="role">ASSISTANT</span><span class="time">14:31:58</span>
+                <span class="tok">1,204 tok</span>
+              </div>
+              <p>我先看一下组件实现和它的调用链，再定位重复渲染的来源。</p>
+              <div class="tooluse">
+                <div class="tool-head">
+                  <span class="tool-name">Read</span>
+                  <span>src/components/MessageCard.tsx</span>
+                  <span class="tag">tool_use</span>
+                </div>
+                <pre class="code">
+{
+  "file_path": "src/components/MessageCard.tsx",
+  "limit": 240
+}</pre>
+              </div>
+            </article>
+
+            <article class="msg user">
+              <div class="msg-head">
+                <span class="role">USER</span><span class="time">14:32:01</span>
+                <span class="tok">3,110 tok</span>
+              </div>
+              <div class="toolresult">
+                <div class="tool-head">
+                  <span class="tool-name">tool_result</span>
+                  <span>240 行 · 代码已折叠</span>
+                  <span class="tag">file</span>
+                </div>
+                <pre class="code">
+export function MessageCard({ message, selection, onToggle }) {
+  const blocks = useMemo(() => normalize(message.blocks), [message])
+  return (
+    &lt;article className={cn('msg', selection[message.id])}&gt;
+      {blocks.map(renderBlock)}
+    &lt;/article&gt;
+  )
+}</pre>
+              </div>
+            </article>
+
+            <article class="msg assistant dropped">
+              <div class="msg-head">
+                <span class="role">ASSISTANT</span><span class="time">14:32:04</span>
+                <span class="drop-tag">已丢弃 · 指纹匹配</span>
+              </div>
+              <p>
+                另外我注意到项目里还保留了旧的渲染路径，那段代码可能已经不再被引用，建议一并清理。
+              </p>
+            </article>
+
+            <article class="msg assistant">
+              <div class="msg-head">
+                <span class="role">ASSISTANT</span><span class="time">14:32:06</span>
+                <span class="tok">2,480 tok</span>
+              </div>
+              <p>重复渲染的原因是父组件每次渲染都会传入新的内联对象，导致 memo 比较失效。</p>
+              <ul>
+                <li>将 <code>options</code> 提升为模块级常量或使用 <code>useMemo</code></li>
+                <li>把 <code>onToggle</code> 用 <code>useCallback</code> 固定引用</li>
+                <li>拆分大对象 props，避免无关字段触发更新</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="composer">
+            <div class="input">继续输入；发送前将自动匹配已标注内容</div>
+            <button class="send">发送</button>
+          </div>
+        </main>
+
+        <aside class="inspector">
+          <div class="tabs"><span class="on">概览</span><span>SYSTEM</span><span>TOOLS</span></div>
+
+          <div class="gauge-row">
+            <div class="gauge">
+              <svg width="86" height="86" viewBox="0 0 86 86">
+                <circle
+                  cx="43"
+                  cy="43"
+                  r="34"
+                  fill="none"
+                  stroke="var(--bar-bg)"
+                  stroke-width="6"
+                />
+                <circle
+                  cx="43"
+                  cy="43"
+                  r="34"
+                  fill="none"
+                  stroke="var(--accent)"
+                  stroke-width="6"
+                  stroke-dasharray="213.6"
+                  stroke-dashoffset="64"
+                  transform="rotate(-90 43 43)"
+                />
+                <circle
+                  cx="43"
+                  cy="43"
+                  r="41"
+                  fill="none"
+                  stroke="var(--line)"
+                  stroke-width="1"
+                  stroke-dasharray="2 4"
+                />
+              </svg>
+              <div class="gauge-label"><b>70%</b><span>保留</span></div>
+            </div>
+            <div class="gauge-stats">
+              <div class="stat-row"><span>总上下文</span><b>18,432</b></div>
+              <div class="stat-row"><span>保留</span><b>12,840</b></div>
+              <div class="stat-row"><span>丢弃</span><b>5,592</b></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-label">构成</div>
+            <div class="breakdown" style="margin-top: 8px">
+              <div class="brow">
+                <span>SYSTEM</span>
+                <div class="mini"><span style="width: 17%"></span></div>
+                <span class="num">3,104</span>
+              </div>
+              <div class="brow">
+                <span>TOOLS</span>
+                <div class="mini"><span style="width: 17%"></span></div>
+                <span class="num">3,096</span>
+              </div>
+              <div class="brow">
+                <span>MESSAGES</span>
+                <div class="mini"><span style="width: 66%"></span></div>
+                <span class="num">12,232</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="matchbox">
+            <div class="match-title"><span>自动匹配</span><span class="ok">已生效</span></div>
+            <div class="match-row"><span>命中 drop 规则</span><span>3 条</span></div>
+            <div class="match-row"><span>tool 配对校验</span><span class="ok">通过</span></div>
+            <div class="match-row"><span>作用范围</span><span>仅 messages</span></div>
+          </div>
+
+          <div class="matchbox">
+            <div class="match-title"><span>精确用量</span><span>API</span></div>
+            <div class="match-row"><span>input_tokens</span><span>18,432</span></div>
+            <div class="match-row"><span>cache_read</span><span>2,048</span></div>
+            <div class="match-row"><span>cache_creation</span><span>0</span></div>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="statusbar">
+        <span>session · 上下文压缩分析</span>
+        <span>frame 12 / 4</span>
+        <span>本地运行 · 无数据上传</span>
+        <span class="right">自动匹配 开 · 适用 3 条 · 校验通过</span>
+      </footer>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(location.search)
+      const app = document.querySelector('.app')
+      app.dataset.style = params.get('style') || 'minimal'
+      app.dataset.theme = params.get('theme') || 'light'
+      const themeHint = document.querySelector('.themehint')
+      if (themeHint) themeHint.textContent = 'THEME / ' + app.dataset.theme.toUpperCase()
+    </script>
+  </body>
+</html>
